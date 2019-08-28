@@ -116,7 +116,7 @@ class UncertainNumber(object):
         rcParams.update(pgf_with_pdflatex)
         if not TextRender:
             rcParams.update({"svg.fonttype": 'none'})
-        if self.Form == "interval" or self.nalpha==1:   # for interval plot
+        if self.Form == "interval" or self.nalpha == 1:   # for interval plot
             xsize = 5
             ysize = 0.25
             fig = plt.figure(figsize=(xsize, ysize), dpi=pdpi)

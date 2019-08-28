@@ -505,7 +505,7 @@ if __name__ == "__main__":
     UncertainProblem.calcRobustness()
     print()
     print("Shadow uncertainty:")
-    print(UncertainProblem.ShadowUncertainty[0,:,:,:])
+    print(UncertainProblem.ShadowUncertainty[0, :, :, :])
     print()
     print("Reset pUnc1 to change upper bound -1:")
     pInt1 = UncertainNumber([1, 5])
