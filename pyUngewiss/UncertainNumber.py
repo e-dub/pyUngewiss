@@ -216,27 +216,27 @@ class UncertainNumber(object):
                 elif lang == "DE":
                     plt.xlabel(r"Wert")
             rcParams.update({'font.size': fontsize})
-            plt.tight_layout()
+            #plt.tight_layout()
             self.Plot = plt
 
 
-def plotIntervals(IntervalList, labels=[],  Units=[], show=False, xPlot=5,
+def plotIntervals(pUncList, labels=[],  Units=[], show=False, xPlot=5,
                   color=DefaultColor, delta=0.5, plotBuffer=0.1, xAxisRot=True,
                   xlabel='Uncertain value', font='tex gyre pagella',
                   padLabel=[]):
-    if isinstance(IntervalList, list):
-        data = [[]]*len(IntervalList)
-        for i, val in enumerate(IntervalList):
+    if isinstance(pUncList, list):
+        data = [[]]*len(pUncList)
+        for i, val in enumerate(pUncList):
             if type(val) == np.ndarray:
                 data[i] = val
             elif type(val) == UncertainNumber:
                 data[i] = val.Value
         if isinstance(color, list) is False:
-            color = [color]*len(IntervalList)
-    elif type(IntervalList) == UncertainNumber:
-        data = IntervalList.Value
+            color = [color]*len(pUncList)
+    elif type(pUncList) == UncertainNumber:
+        data = pUncList.Value
     else:
-        data = [IntervalList]
+        data = [pUncList]
         color = [color]
     nP = len(data)
     if np.shape(np.shape(data))[0] == 1:
@@ -301,30 +301,29 @@ def plotIntervals(IntervalList, labels=[],  Units=[], show=False, xPlot=5,
     return plt, ax
 
 
-def plotUncertainFn(IntervalList, x=[], xlabel="Dependent parameter",
+def plotUncertainFn(pUncList, x=[], xlabel="Dependent parameter",
                     ylabel="Value of uncertain function", color=DefaultColor,
                     fontsize=12, font='tex gyre pagella', pdpi=100, xlimits=[],
                     ylimits=[], xsize=7, ysize=5, outline=False, fill=True,
                     nYTicks=5, nXTicks=5, xAxisRot=True, frame=True):
-    # rename pUnc, IntervalList
-    if type(IntervalList) is list:
-        if len(IntervalList) == 0:
-            nAlpha = IntervalList[0].nalpha
+    if type(pUncList) is list:
+        if len(pUncList) == 0:
+            nAlpha = pUncList[0].nalpha
         else:
-            nAlpha = IntervalList[0].nalpha
-        pUnc = np.zeros((len(IntervalList), nAlpha, 2))
-        for i, val in enumerate(IntervalList):
+            nAlpha = pUncList[0].nalpha
+        pUnc = np.zeros((len(pUncList), nAlpha, 2))
+        for i, val in enumerate(pUncList):
             if type(val) == np.ndarray:
                 pUnc[i] = val
             elif type(val) == UncertainNumber:
                 pUnc[i] = val.Value
-            elif type(IntervalList) == UncertainNumber:
-                pUnc = IntervalList.Value
+            elif type(pUncList) == UncertainNumber:
+                pUnc = pUncList.Value
             elif type(val) == list:
                 pUnc[i] = val[0].Value
     else:
         pUnc = np.zeros((1, nAlpha, 2))
-        pUnc[0, :, :] = IntervalList.Value
+        pUnc[0, :, :] = pUncList.Value
     rFuzz = pUnc
     plt.rcParams['font.family'] = font
     nalpha = np.size(rFuzz, 1)
