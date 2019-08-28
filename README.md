@@ -37,4 +37,4 @@ pip install pyUngewiss
 ```
 
 ## Getting started
-See iPython notebook under tutorials.
+See iPython notebooks and Python files under examples.
