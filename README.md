@@ -2,7 +2,7 @@
 
 # pyUngewiss
 
-**Python librarY for UNcertainty analysis in liGhtwEight desiGn with IntervalS and fuzzy numberS**
+**Python librarY for Uncertainty aNalysis in liGhtwEight desiGn with IntervalS and fuzzy numberS**
 
 **Python-Bibliothek zur Unsicherheitsanalyse im Leichtbau mit Intervallen und unscharfen Zahlen**
 
