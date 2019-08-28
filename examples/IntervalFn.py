@@ -1,5 +1,5 @@
 import numpy as np
-import pyUngewiss as ung
+import pyUngewiss as pu
 
 
 def SysEq(p, x):
@@ -7,15 +7,15 @@ def SysEq(p, x):
     return(y)
 
 
-pInt = ung.UncertainNumber([-10, 10])
+pInt = pu.UncertainNumber([-10, 10])
 nS = 200
 x = np.linspace(-10, 10, nS)
 rFnInt = [[]]*nS
-Prob = ung.UncertainAnalysis(SysEq, pInt)
+Prob = pu.UncertainAnalysis(SysEq, pInt)
 Prob.deltax = 1e-6
 Prob.epsStop = 1e-6
 for ii in range(len(x)):
     Prob.para = x[ii]
     Prob.calculate()
     rFnInt[ii] = Prob.rUnc
-ung.plotUncertainFn(rFnInt, x)
+pu.plotUncertainFn(rFnInt, x)

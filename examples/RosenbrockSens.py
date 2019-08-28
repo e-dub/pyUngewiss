@@ -1,5 +1,5 @@
 import numpy as np
-import pyUngewiss as ung
+import pyUngewiss as pu
 from scipy.optimize import rosen, rosen_der
 
 
@@ -13,21 +13,21 @@ def SensEq(p, r, g, x):
 
 nAlpha = 6
 pFuzz = [[]]*11
-pFuzz[0] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[1] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[2] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[3] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[4] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[5] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[6] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[7] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[8] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[9] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
-pFuzz[10] = ung.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[0] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[1] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[2] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[3] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[4] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[5] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[6] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[7] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[8] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[9] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
+pFuzz[10] = pu.UncertainNumber([1, 2, 3, 4], Form="trapazoid", nalpha=nAlpha)
 x = 1.
 for i, p in enumerate(pFuzz):
     p.plotValue(xlabel="$p_{"+str(i)+"}$")
-UncertainProbFD = ung.UncertainAnalysis(SysEq, pUnc=pFuzz)
+UncertainProbFD = pu.UncertainAnalysis(SysEq, pUnc=pFuzz)
 UncertainProbFD.Alg = "NLPQLP"
 UncertainProbFD.nAlpha = nAlpha
 UncertainProbFD.deltax = 1e-6,
@@ -40,7 +40,7 @@ UncertainProbFD.SensCalc = "FD"
 UncertainProbFD.calculate()
 UncertainProbFD.rUnc.plotValue(xlabel="$r_{FD}$", color="r")
 
-UncertainProbAS = ung.UncertainAnalysis(SysEq, pUnc=pFuzz, SensEq=SensEq)
+UncertainProbAS = pu.UncertainAnalysis(SysEq, pUnc=pFuzz, SensEq=SensEq)
 UncertainProbAS.Alg = "NLPQLP"
 UncertainProbAS.nAlpha = nAlpha
 UncertainProbAS.paraNorm = 0
@@ -64,5 +64,7 @@ print("Reduction in computational effort (number of evaluations) " +
                           UncertainProbAS.OutputData["nEval"]) /
                 UncertainProbAS.OutputData["nEval"]*100, 2)) + " %")
 print("Difference in solutions (first norm): " +
-      str(np.format_float_scientific(np.sum(np.abs(UncertainProbAS.rUnc.Value-UncertainProbFD.rUnc.Value)) /
-                                     np.max(UncertainProbAS.rUnc.Value), precision=4)))
+      str(np.format_float_scientific(np.sum(np.abs(UncertainProbAS.rUnc.Value -
+                                                   UncertainProbFD.rUnc.Value)) /
+                                     np.max(UncertainProbAS.rUnc.Value),
+                                     precision=4)))

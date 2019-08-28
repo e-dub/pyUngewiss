@@ -1,4 +1,4 @@
-import pyUngewiss as ung
+import pyUngewiss as pu
 import numpy as np
 
 
@@ -11,9 +11,9 @@ def SensEq(p, r, g, x):
 
 
 nAlpha = 11
-pFuzz = ung.UncertainNumber([8, 9, 11, 12], Form="trapazoid", nalpha=nAlpha)
+pFuzz = pu.UncertainNumber([8, 9, 11, 12], Form="trapazoid", nalpha=nAlpha)
 x = 1.
-ProbFD = ung.UncertainAnalysis(SysEq, pUnc=pFuzz)
+ProbFD = pu.UncertainAnalysis(SysEq, pUnc=pFuzz)
 ProbFD.Alg = "NLPQLP"
 ProbFD.nAlpha = nAlpha
 ProbFD.deltax = 1e-6,
@@ -24,7 +24,7 @@ ProbFD.epsStop = 1e-6
 ProbFD.para = x
 ProbFD.SensCalc = "FD"
 ProbFD.calculate()
-ProbAS = ung.UncertainAnalysis(SysEq, pUnc=pFuzz, SensEq=SensEq)
+ProbAS = pu.UncertainAnalysis(SysEq, pUnc=pFuzz, SensEq=SensEq)
 ProbAS.Alg = "NLPQLP"
 ProbAS.nAlpha = nAlpha
 ProbAS.paraNorm = 0
@@ -51,4 +51,3 @@ print("Difference in solutions (first norm): " +
                                                    ProbFD.rUnc.Value)) /
                                             np.max(ProbAS.rUnc.Value),
                                             precision=4)))
-

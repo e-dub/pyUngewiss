@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-import pyUngewiss as ung
+import pyUngewiss as pu
 
 
 def HockettSherby(p, x):
@@ -8,12 +8,12 @@ def HockettSherby(p, x):
     return([sigma])
 
 
-sigmaY = ung.UncertainNumber([240, 260])
-sigmaP = ung.UncertainNumber([40, 60])
-cHS = ung.UncertainNumber([8,12])
-nHS = ung.UncertainNumber([0.7, 0.8])
+sigmaY = pu.UncertainNumber([240, 260])
+sigmaP = pu.UncertainNumber([40, 60])
+cHS = pu.UncertainNumber([8, 12])
+nHS = pu.UncertainNumber([0.7, 0.8])
 pUnc = [sigmaY, sigmaP, cHS, nHS]
-Prob = ung.UncertainAnalysis(HockettSherby, pUnc)
+Prob = pu.UncertainAnalysis(HockettSherby, pUnc)
 Prob.deltax = 1e-3
 Prob.epsStop = 1e-3
 nS = 100
@@ -28,6 +28,6 @@ for i, val in enumerate(epsilon):
     rFnInt[i] = Prob.rUnc
     nEvaluation += Prob.nEval
 
-ung.plotUncertainFn(rFnInt, epsilon, ylimits=[0, 340], xlimits=[0, epsilonMax],
-                    xlabel="plastic strain $\\varepsilon_{pl}$ [-]",
-                    ylabel="uncertain stress $\\tilde{\\sigma}$")
+pu.plotUncertainFn(rFnInt, epsilon, ylimits=[0, 340], xlimits=[0, epsilonMax],
+                   xlabel="plastic strain $\\varepsilon_{pl}$ [-]",
+                   ylabel="uncertain stress $\\tilde{\\sigma}$")

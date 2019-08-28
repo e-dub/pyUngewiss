@@ -3,7 +3,7 @@ Test function for interval analysis, in which the classic problem of interval
 depedency is shown with IntPy and PyInteval, if avaialble, and how FuzzAnPy
 avoids this problem.
 '''
-import pyUngewiss as ung
+import pyUngewiss as pu
 from termcolor import colored
 
 try:
@@ -35,8 +35,8 @@ def SysEq(p, x):
 nAlpha = 1
 pL = 1.
 pU = 5.
-pInt = ung.UncertainNumber([1, 5])
-Prob = ung.UncertainAnalysis()
+pInt = pu.UncertainNumber([1, 5])
+Prob = pu.UncertainAnalysis()
 Prob.SysEq = SysEq
 Prob.pUnc = pInt
 Prob.calculate()
