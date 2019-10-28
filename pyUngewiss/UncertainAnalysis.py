@@ -22,7 +22,7 @@ import pygmo as pg
 import pyOpt
 import cma
 import numpy as np
-from numpy.linalg import pinv
+from numpy.linalg import lstsq
 
 
 np.seterr(divide='ignore', invalid='ignore')
@@ -239,7 +239,8 @@ class UncertainAnalysis(object):
             gLUActiveIndex = -gLU <= epsActive
             gLUNablaActive = gLUNabla[gLUActiveIndex, :]
             lam = np.zeros((self.np*2))
-            lam[gLUActiveIndex] = (fNabla@pinv(gLUNablaActive)).T
+            #lam[gLUActiveIndex] = (fNabla@pinv(gLUNablaActive)).T
+            lam[gLUActiveIndex] = lstsq(gLUNablaActive.T, fNabla, rcond=None)[0]
             if self.paraNorm:
                 if np.size(xL) == 1:
                     denorm = np.array([xU[0]-xL[0], xU[0]-xL[0]])
@@ -271,7 +272,7 @@ class UncertainAnalysis(object):
             pUnc[0, :, :] = self.pUnc.Value
             self.np = 1
         ptilde = np.zeros([self.nr, np.size(pUnc, 0), self.nAlpha, 2])
-        SU = np.zeros([self.nr, np.size(pUnc, 0)*2, self.nAlpha, 2])
+        #SU = np.zeros([self.nr, np.size(pUnc, 0)*2, self.nAlpha, 2])
         lambdaR = np.zeros([self.nr, np.size(pUnc, 0)*2, self.nAlpha, 2])
         for ir in range(self.nr):
             for ialpha in reversed(range(self.nAlpha)):
@@ -411,7 +412,7 @@ class UncertainAnalysis(object):
         OutputData["pUnc"] = ptilde
         OutputData["nEval"] = self.nEval
         OutputData["lambdaR"] = lambdaR
-        self.SU = SU
+        #self.SU = SU
         if self.nr > 1:
             self.rUnc = [[]]*len(rUnc)
             for i, val in enumerate(rUnc):

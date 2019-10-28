@@ -54,23 +54,23 @@ if PyUncertainties:
     rUnc = pUnc-pUnc
 
 print("-"*50)
-print(colored("Interval analysis via alpha-level optimization with " +
+print(colored("Interval analysis via alpha-level optimization with package " +
               "'pyUngewiss' optimization gives: " +
               str(Prob.rUnc.Value), "blue"))
-print(colored("Though it needs the following number of evaluations: " +
+print(colored("Number of evaluations: " +
               str(Prob.OutputData["nEval"]), "blue"))
 print()
 if IntPy:
-    print(colored("Standard interval analyis with 'IntPy' gives: " +
+    print(colored("Standard interval analyis with package 'IntPy' gives: " +
                   str(rInt1), "red"))
     print()
 if PyInterval:
-    print(colored("Standard interval analyis with 'PyInterval' gives: " +
+    print(colored("Standard interval analyis with package 'PyInterval' gives: " +
                   str(rInt2), "red"))
-    print(colored("OVERESTIMATED!!!", "red"))
+    print(colored("Uncertainty OVERESTIMATED!!!", "red"))
     print()
 if PyUncertainties:
-    print(colored("Uncertainty analyis with 'uncertainties' gives: " +
+    print(colored("Uncertainty analyis with package 'uncertainties' gives: " +
                   str(rUnc), "green"))
 print()
 print("Check complete!")

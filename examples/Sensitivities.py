@@ -49,5 +49,5 @@ print("Reduction in computational effort (number of evaluations) " +
 print("Difference in solutions (first norm): " +
       str(np.format_float_scientific(np.sum(np.abs(ProbAS.rUnc.Value -
                                                    ProbFD.rUnc.Value)) /
-                                            np.max(ProbAS.rUnc.Value),
-                                            precision=4)))
+                                     np.max(ProbAS.rUnc.Value),
+                                     precision=4)))

@@ -19,7 +19,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import rcParams
-
+import seaborn as sns
 
 np.seterr(divide='ignore', invalid='ignore')
 DefaultColor = (0, 123/255, 228/255)
@@ -36,6 +36,7 @@ class UncertainNumber(object):
         self.nalpha = nalpha
         self.type = "UncertainNumber"
         if self.Form == "interval":
+            values = np.array(values).reshape(2,)
             alpha = np.linspace(0, 1., self.nalpha)
             A = values[0]-(0)*alpha
             B = values[1]-(0)*alpha
@@ -139,13 +140,7 @@ class UncertainNumber(object):
             pmax = np.max(self.Value)
             ax.plot((pmin*(1-plotBuffer), pmax*(1+plotBuffer)), (0, 0), 'w',
                     alpha=0.0)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-            ax.spines['left'].set_visible(False)
-            ax.spines['bottom'].set_visible(False)
-            ax.yaxis.set_ticks_position('none')
-            ax.xaxis.set_ticks_position('bottom')
-            plt.grid(False)
+            sns.despine()
             nlmax = len(ylabel)
             yax = ax.get_yaxis()
             if not padLabel:
@@ -157,9 +152,9 @@ class UncertainNumber(object):
                 ax.set_xlabel(xlabel + ' [' + Units + ']')
             if xAxisRot:
                 plt.setp(ax.get_xticklabels(), rotation='vertical')
-            plt.xlim((np.min(self.Value)-(np.max(self.Value)-
+            plt.xlim((np.min(self.Value) - (np.max(self.Value) -
                       np.min(self.Value))/5),
-                     (np.max(self.Value)+(np.max(self.Value)-
+                     (np.max(self.Value) + (np.max(self.Value) -
                       np.min(self.Value))/5))
         else:
             fig = plt.figure(figsize=(xsize, ysize), dpi=pdpi)
@@ -387,6 +382,7 @@ if __name__ == "__main__":
     ATrap.printValue()
     ATrap.printValueNorm()
     print()
+
     print("Test plotting all uncertain numbers:")
     ATrapSing = UncertainNumber([25, 25, 25, 25], Form="trapazoid", nalpha=6)
     ATrapSing.plotValue()
@@ -398,7 +394,7 @@ if __name__ == "__main__":
     ATri.plotValue()
     AGauss = UncertainNumber([25, 5, 5, 1.5], Form="gauss-cuttoff", nalpha=61)
     AGauss.plotValue()
-
+    print()
 
     print("Test plotting several intervals in same plot:")
     m = UncertainNumber([2., 2.5])
