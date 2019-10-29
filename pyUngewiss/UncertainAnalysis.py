@@ -119,8 +119,9 @@ class UncertainAnalysis(object):
                 dgdx = np.zeros([1, np.size(x)])
             else:
                 dgdx = []
-            if np.size(self.nr) > 1:
-                dfdx = np.array(drdx)[:, ir].reshape([1, len(x)])
+            if self.nr > 1:
+                #dfdx = np.array(drdx)[:, ir].reshape([1, len(x)])
+                dfdx = drdx[ir].reshape([1, len(x)])
             else:
                 dfdx = np.array(drdx).reshape([1, len(x)])
             fail = 0
@@ -226,34 +227,37 @@ class UncertainAnalysis(object):
             if hasattr(self, 'ShadowUncertainty') is False:
                 self.ShadowUncertainty = np.zeros((self.nr, self.np,
                                                    self.nAlpha, 2))
-            Hist = pyOpt.History(Name, "r")
-            fNablaAll = Hist.read([0, -1], ["grad_obj"])[0]["grad_obj"]
-            fNabla = fNablaAll[-1]
-            epsActive = 1e-3
-            gL = xL-xOpt
-            gU = xOpt-xU
-            gLU = np.hstack((gL, gU))
-            gLNabla = -np.eye(self.np)
-            gUNabla = np.eye(self.np)
-            gLUNabla = np.vstack((gLNabla, gUNabla))
-            gLUActiveIndex = -gLU <= epsActive
-            gLUNablaActive = gLUNabla[gLUActiveIndex, :]
-            lam = np.zeros((self.np*2))
-            #lam[gLUActiveIndex] = (fNabla@pinv(gLUNablaActive)).T
-            lam[gLUActiveIndex] = lstsq(gLUNablaActive.T, fNabla, rcond=None)[0]
-            if self.paraNorm:
-                if np.size(xL) == 1:
-                    denorm = np.array([xU[0]-xL[0], xU[0]-xL[0]])
+            for i in ["Min", "Max"]:
+                Hist = pyOpt.History(Name+i, "r")
+                fNablaAll = Hist.read([0, -1], ["grad_obj"])[0]["grad_obj"]
+                fNabla = fNablaAll[-1]
+                epsActive = 1e-3
+                gL = xL-xOpt
+                gU = xOpt-xU
+                gLU = np.hstack((gL, gU))
+                gLNabla = -np.eye(self.np)
+                gUNabla = np.eye(self.np)
+                gLUNabla = np.vstack((gLNabla, gUNabla))
+                gLUActiveIndex = -gLU <= epsActive
+                gLUNablaActive = gLUNabla[gLUActiveIndex, :]
+                lam = np.zeros((self.np*2))
+                #lam[gLUActiveIndex] = (fNabla@pinv(gLUNablaActive)).T
+                lam[gLUActiveIndex] = lstsq(gLUNablaActive.T, -fNabla, rcond=None)[0]
+                if self.paraNorm:
+                    if np.size(xL) == 1:
+                        denorm = np.array([xU[0]-xL[0], xU[0]-xL[0]])
+                    else:
+                        denorm = np.concatenate((xU-xL, xU-xL), axis=0)
+                    lam /= denorm
                 else:
-                    denorm = np.concatenate((xU-xL, xU-xL), axis=0)
-                lam /= denorm
-            else:
-                lam
-            lam = lam[:self.np]+lam[self.np:]
-            if Name[-3:] == "Max":
-                self.ShadowUncertainty[ir, :, ialpha, 1] = -lam
-            elif Name[-3:] == "Min":
-                self.ShadowUncertainty[ir, :, ialpha, 0] = lam
+                    lam
+                print(lam)
+                lam = lam[:self.np]+lam[self.np:]
+                #print(lam)
+                if i == "Max":
+                    self.ShadowUncertainty[ir, :, ialpha, 1] = lam
+                elif i == "Min":
+                    self.ShadowUncertainty[ir, :, ialpha, 0] = lam
 
         # Start of Optimization loop
         rUnc = np.zeros([self.nr, self.nAlpha, 2])
@@ -404,10 +408,7 @@ class UncertainAnalysis(object):
                     ptilde[ir, :, ialpha, 0] = pMin
                     ptilde[ir, :, ialpha, 1] = pMax
                     if self.Alg in ["NLPQLP", "SLSQP", "MMA"]:
-                        calcShadowUncertainty(Name+"Min", pMin, xL, xU, ir,
-                                              ialpha)
-                        calcShadowUncertainty(Name+"Max", pMax, xL, xU, ir,
-                                              ialpha)
+                        calcShadowUncertainty(Name, pMin, xL, xU, ir, ialpha)
         OutputData = {}
         OutputData["pUnc"] = ptilde
         OutputData["nEval"] = self.nEval
