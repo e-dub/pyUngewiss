@@ -16,6 +16,7 @@ pip install scipy
 pip install numpy
 pip install matplotlib
 pip install pygmo
+pip install cma
 ```
 Further, for the use of gradient-based optimizers, you will need the package pyOpt.
 ```
