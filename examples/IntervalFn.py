@@ -18,4 +18,5 @@ for ii in range(len(x)):
     Prob.para = x[ii]
     Prob.calculate()
     rFnInt[ii] = Prob.rUnc
-pu.plotUncertainFn(rFnInt, x)
+plt, _ = pu.plotUncertainFn(rFnInt, x)
+plt.show()

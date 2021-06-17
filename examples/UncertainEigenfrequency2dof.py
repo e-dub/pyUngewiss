@@ -101,9 +101,10 @@ f0Unc[1].printValue()
 print("In Hertz")
 print((f0Unc[0].Value**0.5)/2/np.pi)
 print((f0Unc[1].Value**0.5)/2/np.pi)
-pu.plotIntervals(f0Unc, color="r", xlabel="frequency [Hz]",
+plt, _ = pu.plotIntervals(f0Unc, color="r", xlabel="frequency [Hz]",
                  labels=["eigenfrequency $f_{0,1}$",
                          "eigenfrequency $f_{0,2}$"])
+plt.show()
 
 # Robustness
 Prob.calcRobustness()

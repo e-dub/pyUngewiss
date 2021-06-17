@@ -109,7 +109,7 @@ class UncertainNumber(object):
     def plotValue(self, xlabel=[], ylabel=[], pdpi=100, fill=True,
                   fontsize=10, xsize=2.5, ysize=2, xlimits=[], lang="EN",
                   TextRender=True, AxisNameLong=True, frame=False, nYTicks=2,
-                  nXTicks=5, xAxisRot=True, trans=1.0, font='tex gyre pagella',
+                  nXTicks=5, xAxisRot=False, trans=1.0, font='tex gyre pagella',
                   Units=[],  plotBuffer=0.1, color=DefaultColor, delta=0.5,
                   padLabel=[]):
         plt.rcParams['font.family'] = font
@@ -216,7 +216,7 @@ class UncertainNumber(object):
 
 
 def plotIntervals(pUncList, labels=[],  Units=[], show=False, xPlot=5,
-                  color=DefaultColor, delta=0.5, plotBuffer=0.1, xAxisRot=True,
+                  color=DefaultColor, delta=0.5, plotBuffer=0.1, xAxisRot=False,
                   xlabel='Uncertain value', font='tex gyre pagella',
                   padLabel=[]):
     if isinstance(pUncList, list):
@@ -300,7 +300,7 @@ def plotUncertainFn(pUncList, x=[], xlabel="Dependent parameter",
                     ylabel="Value of uncertain function", color=DefaultColor,
                     fontsize=12, font='tex gyre pagella', pdpi=100, xlimits=[],
                     ylimits=[], xsize=7, ysize=5, outline=False, fill=True,
-                    nYTicks=5, nXTicks=5, xAxisRot=True, frame=True):
+                    nYTicks=5, nXTicks=5, xAxisRot=False, frame=True):
     if type(pUncList) is list:
         if len(pUncList) == 0:
             nAlpha = pUncList[0].nalpha

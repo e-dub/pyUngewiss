@@ -23,8 +23,9 @@ Prob.calculate()
 
 m.printValue()
 k.printValue()
-pu.plotIntervals([m.Value, k.Value],
+plt, _ = pu.plotIntervals([m.Value, k.Value],
                  labels=["mass $m$ [kg]", "stiffness $k$ [N/mm]"])
+plt.show()
 
 f0Unc = Prob.rUnc
 f0Unc.printValue()

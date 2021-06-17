@@ -18,9 +18,18 @@ TODO algoptions as object
 """
 from pyUngewiss.UncertainNumber import UncertainNumber
 from pyUngewiss.OptAlgOptions import AlgOptions
-import pygmo as pg
-import pyOpt
-import cma
+try:
+    import pygmo as pg
+except:
+    pass
+try:
+    import pyOpt
+except:
+    pass
+try:
+    import cma
+except:
+    pass
 import numpy as np
 from numpy.linalg import lstsq
 
