@@ -44,7 +44,7 @@ See iPython notebooks and Python files under examples.
 
 Set up uncertain function with uncertain parameters and further parameters as input:
 ```Python
-def Eigenfrequence1DoF(p, x):
+def Eigenfrequency1DoF(p, x):
     m = p[0]
     k = p[1]
     omega0 = np.sqrt(k/m)
