@@ -1,4 +1,4 @@
-<p align=center><img height="50%" width="50%" src="figures/pyUngewiss.png"></p>
+<p align=center><img height="50%" width="50%" src="figures/Logo_pyUngewiss.svg"></p>
 
 # pyUngewiss
 

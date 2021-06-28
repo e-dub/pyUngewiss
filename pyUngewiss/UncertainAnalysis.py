@@ -42,7 +42,7 @@ __shorttitle__ = "pyUngewiss"
 __version__ = "1.0 - Initial public release"
 __all__ = 'pyUngewiss'
 __author__ = "E. J. Wehrle"
-__copyright__ = "Copyright 2019: E. J. Wehrle"
+__copyright__ = "Copyright 2019, 2020, 2021: E. J. Wehrle"
 __email__ = "Erich.Wehrle(a)unibz.it"
 __license__ = "GNU General Public License v3.0"
 __url__ = 'github.org/e-dub/pyUngewiss'
@@ -482,11 +482,11 @@ if __name__ == "__main__":
     print()
     print("Quick test 1: pUnc - pUnc = rUnc (should be 0)")
     print("-"*70)
-    pInt = UncertainNumber([1, 5])
 
     def SysEq1(p, x):
         return(p-p)
 
+    pInt = UncertainNumber([1, 5])
     UncertainProblem = UncertainAnalysis()
     UncertainProblem.pUnc = pInt
     UncertainProblem.SysEq = SysEq1
@@ -501,12 +501,12 @@ if __name__ == "__main__":
     print()
     print("Quick test 2: pUnc1 * pUnc2 = rUnc and check shadow uncertainty")
     print("-"*70)
-    pInt1 = UncertainNumber([1, 5])
-    pInt2 = UncertainNumber([1, 5])
 
     def SysEq2(p, x):
         return(p[0]*p[1])
 
+    pInt1 = UncertainNumber([1, 5])
+    pInt2 = UncertainNumber([1, 5])
     UncertainProblem = UncertainAnalysis()
     UncertainProblem.pUnc = [pInt1, pInt2]
     UncertainProblem.SysEq = SysEq2

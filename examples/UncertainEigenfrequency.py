@@ -3,7 +3,7 @@ import pyUngewiss as pu
 import numpy as np
 
 
-def Eigenfrequence1DoF(p, x):
+def Eigenfrequency1DoF(p, x):
     m = p[0]
     k = p[1]
     omega0 = np.sqrt(k/m)
@@ -15,7 +15,7 @@ m = pu.UncertainNumber([2., 2.5])
 k = pu.UncertainNumber([40000, 60000])
 pUnc = [m, k]
 
-Prob = pu.UncertainAnalysis(Eigenfrequence1DoF, pUnc)
+Prob = pu.UncertainAnalysis(Eigenfrequency1DoF, pUnc)
 Prob.deltax = 1e-3
 Prob.epsStop = 1e-3
 
