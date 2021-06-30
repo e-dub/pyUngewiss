@@ -260,7 +260,7 @@ class UncertainAnalysis(object):
                     lam /= denorm
                 else:
                     lam
-                print(lam)
+                #print(lam)
                 lam = lam[:self.np]+lam[self.np:]
                 #print(lam)
                 if i == "Max":
