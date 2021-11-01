@@ -1,5 +1,12 @@
 <p align=center><img height="50%" width="50%" src="figures/Logo_pyUngewiss.svg"></p>
 
+
+[![PyPi Version](https://img.shields.io/pypi/v/pyUngewiss.svg?style=flat-square)](https://pypi.org/project/pyUngewiss)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/pyUngewiss.svg?style=flat-square)](https://pypi.org/project/pyUngewiss/)
+[![GitHub stars](https://img.shields.io/github/stars/e-dub/pyUngewiss.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/e-dub/pyUngewiss)
+[![PyPi downloads](https://img.shields.io/pypi/dm/pyUngewiss.svg?style=flat-square)](https://pypistats.org/packages/pyUngewiss)
+[![Code style: blue](https://img.shields.io/badge/code%20style-blue-blue.svg)](https://blue.readthedocs.io/)
+
 # pyUngewiss
 
 **Python librarY for Uncertainty aNalysis in liGhtwEight desiGn with IntervalS and fuzzy numberS**

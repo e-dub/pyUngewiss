@@ -3,14 +3,14 @@ import pyUngewiss as pu
 
 
 def SysEq(p, x):
-    y = x**2+p
-    return(y)
+    y = x ** 2 + p
+    return y
 
 
 pInt = pu.UncertainNumber([-10, 10])
 nS = 200
 x = np.linspace(-10, 10, nS)
-rFnInt = [[]]*nS
+rFnInt = [[]] * nS
 Prob = pu.UncertainAnalysis(SysEq, pInt)
 Prob.deltax = 1e-6
 Prob.epsStop = 1e-6

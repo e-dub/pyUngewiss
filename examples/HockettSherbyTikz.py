@@ -1,6 +1,8 @@
 import numpy as np
 import pyUngewiss as pu
 
+# from tikzplotlib import tikz_save
+
 
 def HockettSherby(p, x):
     sigma = p[0] + p[1] - p[1] * np.exp(-p[2] * x ** p[3])
@@ -56,43 +58,11 @@ pu.plotUncertainFn(
     ylimits=[0, 340],
     xlimits=[0, np.max(ProbInt.epsilon)],
     xlabel='plastic strain $\\varepsilon_{pl}$ [-]',
-    ylabel='uncertain stress $\\tilde{\\sigma}$',
-)
-ProbInt.rFnUnc[0].plotValue(
-    ylabel='interval yield stress $\\tilde{\\sigma}_y$ [MPa]'
-)
-# ProbInt.rFnUnc[1].plotValue(ylabel="interval yield stress $\\tilde{\\sigma}(\\epsilon=0.002)$ [MPa]")
-ProbInt.rFnUnc[1].plotValue(
-    ylabel='interval stress at 0.2% plastic strain \n$\\tilde{\\sigma}(\\epsilon=0.002)$ [MPa]'
-)
-pu.plotIntervals(
-    [ProbInt.rFnUnc[0], ProbInt.rFnUnc[1]],
-    labels=[
-        'interval yield stress $\\tilde{\\sigma}_y$ [MPa]',
-        'interval stress at 0.2% plastic strain \n$\\tilde{\\sigma}(\\epsilon=0.002)$ [MPa]',
-    ],
-)
-# pu.plotIntervals([ProbInt.rFnUnc[0], ProbInt.rFnUnc[1]],
-#                 labels = ["interval yield stress $\\tilde{\\sigma}_y$ [MPa]",
-#                           "interval yield stress $\\tilde{\\sigma}(\\epsilon=0.002)$ [MPa]"])
-
-# Fuzzy analysis
-ProbFuzz = FunHockettSherby(pFuzz)
-pu.plotUncertainFn(
-    ProbFuzz.rFnUnc,
-    ProbFuzz.epsilon,
-    ylimits=[0, 340],
-    xlimits=[0, np.max(ProbFuzz.epsilon)],
-    color='r',
-    xlabel='plastic strain $\\varepsilon_{pl}$ [-]',
-    ylabel='uncertain stress $\\tilde{\\sigma}$',
-)
-ProbFuzz.rFnUnc[0].plotValue(
-    xlabel='fuzzy yield stress $\\tilde{\\sigma}_y$ [MPa]', color='r'
-)
-# ProbFuzz.rFnUnc[1].plotValue(xlabel="fuzzy yield stress $\\tilde{\\sigma}(\\epsilon=0.002)$ [MPa]",
-#                             color="r")
-ProbFuzz.rFnUnc[1].plotValue(
-    xlabel='fuzzy stress at 0.2% plastic strain \n$\\tilde{\\sigma}(\\epsilon=0.002)$ [MPa]',
-    color='r',
+    ylabel='uncertain stress $\\tilde{\\sigma}$ [MPa]',
+    xAxisRot=False,
+    color='tab:blue',
+    pdpi=1000,
+    fill=True,
+    xsize=3.5,
+    ysize=3,
 )
