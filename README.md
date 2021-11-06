@@ -1,6 +1,6 @@
 <p align=center><img height="50%" width="50%" src="figures/Logo_pyUngewiss.svg"></p>
 
-
+[![DOI](https://zenodo.org/badge/205009090.svg)](https://zenodo.org/badge/latestdoi/205009090)
 [![PyPi Version](https://img.shields.io/pypi/v/pyUngewiss.svg?style=flat-square)](https://pypi.org/project/pyUngewiss)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/pyUngewiss.svg?style=flat-square)](https://pypi.org/project/pyUngewiss/)
 [![GitHub stars](https://img.shields.io/github/stars/e-dub/pyUngewiss.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/e-dub/pyUngewiss)
