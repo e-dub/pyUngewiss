@@ -29,7 +29,7 @@ Further, for the use of gradient-based optimizers, you will need the package pyO
 ```
 svn checkout http://svn.pyopt.org/trunk pyopt
 cd pyopt
-python setup.py install
+python -m pip install -U .
 ```
 For details see www.pyopt.org
 
@@ -37,7 +37,7 @@ Note to PyGMO: the PIP installation is currently not working. Therefore PaGMO an
 
 ### Install
 ```
-python setup.py install
+python -m pip install -U .
 ```
 
 ### PIP
