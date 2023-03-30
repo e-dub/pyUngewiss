@@ -34,25 +34,25 @@ pgf_with_pdflatex = {
 
 
 class UncertainNumber(object):
-    def __init__(self, values, Form='interval', nalpha=1):
+    def __init__(self, values, Form='interval', nLevel=1):
         self.Form = Form
-        self.nalpha = nalpha
+        self.nLevel = nLevel
         self.type = 'UncertainNumber'
         if self.Form == 'interval':
             values = np.array(values).reshape(
                 2,
             )
-            alpha = np.linspace(0, 1.0, self.nalpha)
+            alpha = np.linspace(0, 1.0, self.nLevel)
             A = values[0] - (0) * alpha
             B = values[1] - (0) * alpha
             self.Value = np.array([A, B]).T
         elif self.Form == 'triangle':
-            alpha = np.linspace(0, 1, self.nalpha)
+            alpha = np.linspace(0, 1, self.nLevel)
             A = values[1] - (values[1] - values[0]) * alpha
             B = values[1] + (values[2] - values[1]) * alpha
             self.Value = np.array([A, B]).T
         elif self.Form == 'trapazoid':
-            alpha = np.linspace(0, 1.0, self.nalpha)
+            alpha = np.linspace(0, 1.0, self.nLevel)
             if values[1] == values[0]:
                 A = values[1] - (0) * alpha
             else:
@@ -67,8 +67,8 @@ class UncertainNumber(object):
             sigmaleft = values[1]
             sigmaright = values[2]
             sigmatrunc = values[3]
-            alpha = np.linspace(0, 1, self.nalpha)
-            A = np.zeros([self.nalpha, 2])
+            alpha = np.linspace(0, 1, self.nLevel)
+            A = np.zeros([self.nLevel, 2])
             A[:, 0] = np.flip(
                 mean - np.sqrt(-2 * sigmaleft ** 2 * np.log(alpha))
             )
@@ -96,17 +96,17 @@ class UncertainNumber(object):
         self.normalizeValue()
         self.Area = np.zeros([np.size(self.Value, 0), 1])
         self.AreaNorm = np.zeros([np.size(self.Value, 0), 1])
-        mu1 = np.flip(np.linspace(1, 0, self.nalpha))
-        mu2 = np.linspace(1, 0, self.nalpha)
+        mu1 = np.flip(np.linspace(1, 0, self.nLevel))
+        mu2 = np.linspace(1, 0, self.nLevel)
         ymu = [mu1, mu2]
         ymu = np.resize(
             ymu,
             [
-                self.nalpha * 2,
+                self.nLevel * 2,
             ],
         )
         xVal = [self.Value[:, 0], self.Value[:, 1]] + np.min(self.Value[:, :])
-        xVal = np.resize(xVal, [self.nalpha * 2])
+        xVal = np.resize(xVal, [self.nLevel * 2])
         self.Area = np.abs(np.trapz(y=ymu, x=xVal))
         if self.Area == 0.0:
             self.AreaNorm = 0.0
@@ -115,7 +115,7 @@ class UncertainNumber(object):
             xValNorm = np.resize(
                 xValNorm,
                 [
-                    self.nalpha * 2,
+                    self.nLevel * 2,
                 ],
             )
             self.AreaNorm = np.abs(np.trapz(y=ymu, x=xValNorm))
@@ -133,6 +133,7 @@ class UncertainNumber(object):
         xlabel=[],
         ylabel=[],
         pdpi=100,
+        outline=False,
         fill=True,
         fontsize=10,
         xsize=2.5,
@@ -158,7 +159,7 @@ class UncertainNumber(object):
         rcParams.update(pgf_with_pdflatex)
         if not TextRender:
             rcParams.update({'svg.fonttype': 'none'})
-        if self.Form == 'interval' or self.nalpha == 1:   # for interval plot
+        if self.Form == 'interval' or self.nLevel == 1:   # for interval plot
             xsize = 5
             ysize = 0.25
             fig = plt.figure(figsize=(xsize, ysize), dpi=pdpi)
@@ -240,7 +241,11 @@ class UncertainNumber(object):
                     alpha=trans,
                     linewidth=0.0,
                 )
-            ax.plot(xplot, muplot, 'k-', linewidth=1)
+            if outline:
+                linewidth = 0.5
+            else:
+                linewidth = 0.0
+            ax.plot(xplot, muplot, 'k-', linewidth=linewidth)
             plt.ylim(0, 1.10)
             if xlimits != []:
                 plt.xlim(xlimits[0], xlimits[1])
@@ -411,10 +416,10 @@ def plotUncertainFn(
 ):
     if type(pUncList) is list:
         if len(pUncList) == 0:
-            nAlpha = pUncList[0].nalpha
+            nLevel = pUncList[0].nLevel
         else:
-            nAlpha = pUncList[0].nalpha
-        pUnc = np.zeros((len(pUncList), nAlpha, 2))
+            nLevel = pUncList[0].nLevel
+        pUnc = np.zeros((len(pUncList), nLevel, 2))
         for i, val in enumerate(pUncList):
             if type(val) == np.ndarray:
                 pUnc[i] = val
@@ -425,11 +430,11 @@ def plotUncertainFn(
             elif type(val) == list:
                 pUnc[i] = val[0].Value
     else:
-        pUnc = np.zeros((1, nAlpha, 2))
+        pUnc = np.zeros((1, nLevel, 2))
         pUnc[0, :, :] = pUncList.Value
     rFuzz = pUnc
     plt.rcParams['font.family'] = font
-    nalpha = np.size(rFuzz, 1)
+    nLevel = np.size(rFuzz, 1)
     if len(x) == 0:
         x = np.linspace(0, np.size(rFuzz))
     fig1 = plt.figure(figsize=(xsize, ysize), dpi=pdpi)
@@ -441,7 +446,7 @@ def plotUncertainFn(
                 rFuzz[:, ii + 1, 1],
                 rFuzz[:, ii, 1],
                 facecolor=color,
-                alpha=1.0 / (nalpha) * (nalpha - ii - 1) * 0.9,
+                alpha=1.0 / (nLevel) * (nLevel - ii - 1) * 0.9,
                 linewidth=0,
                 edgecolor=DefaultEdgeColor,
             )
@@ -450,7 +455,7 @@ def plotUncertainFn(
                 rFuzz[:, ii + 1, 0],
                 rFuzz[:, ii, 0],
                 facecolor=color,
-                alpha=1.0 / (nalpha) * (nalpha - ii - 1) * 0.9,
+                alpha=1.0 / (nLevel) * (nLevel - ii - 1) * 0.9,
                 linewidth=0,
                 edgecolor=DefaultEdgeColor,
             )
@@ -504,22 +509,22 @@ if __name__ == '__main__':
     print()
 
     print('Test printing of trapazoidal fuzzy number:')
-    ATrap = UncertainNumber([10, 20, 30, 40], Form='trapazoid', nalpha=6)
+    ATrap = UncertainNumber([10, 20, 30, 40], Form='trapazoid', nLevel=6)
     ATrap.normalizeValue()
     ATrap.printValue()
     ATrap.printValueNorm()
     print()
 
     print('Test plotting all uncertain numbers:')
-    ATrapSing = UncertainNumber([25, 25, 25, 25], Form='trapazoid', nalpha=6)
+    ATrapSing = UncertainNumber([25, 25, 25, 25], Form='trapazoid', nLevel=6)
     ATrapSing.plotValue()
-    ATrapInt = UncertainNumber([10, 10, 40, 40], Form='trapazoid', nalpha=6)
+    ATrapInt = UncertainNumber([10, 10, 40, 40], Form='trapazoid', nLevel=6)
     ATrapInt.plotValue()
-    ATrap = UncertainNumber([10, 20, 30, 40], Form='trapazoid', nalpha=6)
+    ATrap = UncertainNumber([10, 20, 30, 40], Form='trapazoid', nLevel=6)
     ATrap.plotValue()
-    ATri = UncertainNumber([10, 25, 40], Form='triangle', nalpha=6)
+    ATri = UncertainNumber([10, 25, 40], Form='triangle', nLevel=6)
     ATri.plotValue()
-    AGauss = UncertainNumber([25, 5, 5, 1.5], Form='gauss-cuttoff', nalpha=61)
+    AGauss = UncertainNumber([25, 5, 5, 1.5], Form='gauss-cuttoff', nLevel=61)
     AGauss.plotValue()
     print()
 

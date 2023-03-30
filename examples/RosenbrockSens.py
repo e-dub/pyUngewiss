@@ -11,25 +11,25 @@ def SensEq(p, r, g, x):
     return rosen_der(p)
 
 
-nAlpha = 6
+nLevel = 6
 pFuzz = [[]] * 11
-pFuzz[0] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[1] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[2] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[3] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[4] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[5] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[6] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[7] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[8] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[9] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-pFuzz[10] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
+pFuzz[0] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[1] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[2] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[3] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[4] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[5] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[6] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[7] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[8] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[9] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+pFuzz[10] = pu.UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
 x = 1.0
 for i, p in enumerate(pFuzz):
     p.plotValue(xlabel='$p_{' + str(i) + '}$')
 UncertainProbFD = pu.UncertainAnalysis(SysEq, pUnc=pFuzz)
 UncertainProbFD.Alg = 'NLPQLP'
-UncertainProbFD.nAlpha = nAlpha
+UncertainProbFD.nLevel = nLevel
 UncertainProbFD.deltax = (1e-6,)
 UncertainProbFD.paraNorm = 1
 UncertainProbFD.SBFA = False
@@ -42,7 +42,7 @@ UncertainProbFD.rUnc.plotValue(xlabel='$r_{FD}$', color='r')
 
 UncertainProbAS = pu.UncertainAnalysis(SysEq, pUnc=pFuzz, SensEq=SensEq)
 UncertainProbAS.Alg = 'NLPQLP'
-UncertainProbAS.nAlpha = nAlpha
+UncertainProbAS.nLevel = nLevel
 UncertainProbAS.paraNorm = 0
 UncertainProbAS.SBFA = False
 UncertainProbAS.Surr = (False,)

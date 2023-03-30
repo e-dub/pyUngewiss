@@ -35,7 +35,6 @@ def SysEq(p, x):
     return p - p
 
 
-nAlpha = 1
 pL = 1.0
 pU = 5.0
 pInt = pu.UncertainNumber([1, 5])

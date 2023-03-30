@@ -37,16 +37,16 @@ nHSInt = pu.UncertainNumber([0.7, 0.8])
 pInt = [sigmaYInt, sigmaPInt, cHSInt, nHSInt]
 
 # Fuzzy parameters
-nAlpha = 6
+nLevel = 6
 sigmaYFuzz = pu.UncertainNumber(
-    [230, 240, 260, 270], Form='trapazoid', nalpha=nAlpha
+    [230, 240, 260, 270], Form='trapazoid', nLevel=nLevel
 )
 sigmaPFuzz = pu.UncertainNumber(
-    [35, 40, 60, 65], Form='trapazoid', nalpha=nAlpha
+    [35, 40, 60, 65], Form='trapazoid', nLevel=nLevel
 )
-cHSFuzz = pu.UncertainNumber([7, 8, 12, 13], Form='trapazoid', nalpha=nAlpha)
+cHSFuzz = pu.UncertainNumber([7, 8, 12, 13], Form='trapazoid', nLevel=nLevel)
 nHSFuzz = pu.UncertainNumber(
-    [0.6, 0.7, 0.8, 0.9], Form='trapazoid', nalpha=nAlpha
+    [0.6, 0.7, 0.8, 0.9], Form='trapazoid', nLevel=nLevel
 )
 pFuzz = [sigmaYFuzz, sigmaPFuzz, cHSFuzz, nHSFuzz]
 

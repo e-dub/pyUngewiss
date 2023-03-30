@@ -10,12 +10,12 @@ def SensEq(p, r, g, x):
     return 2 * x + 2 * p
 
 
-nAlpha = 11
-pFuzz = pu.UncertainNumber([8, 9, 11, 12], Form='trapazoid', nalpha=nAlpha)
+nLevel = 11
+pFuzz = pu.UncertainNumber([8, 9, 11, 12], Form='trapazoid', nLevel=nLevel)
 x = 1.0
 ProbFD = pu.UncertainAnalysis(SysEq, pUnc=pFuzz)
 ProbFD.Alg = 'NLPQLP'
-ProbFD.nAlpha = nAlpha
+ProbFD.nLevel = nLevel
 ProbFD.deltax = (1e-6,)
 ProbFD.paraNorm = 0
 ProbFD.SBFA = False
@@ -26,7 +26,7 @@ ProbFD.SensCalc = 'FD'
 ProbFD.calculate()
 ProbAS = pu.UncertainAnalysis(SysEq, pUnc=pFuzz, SensEq=SensEq)
 ProbAS.Alg = 'NLPQLP'
-ProbAS.nAlpha = nAlpha
+ProbAS.nLevel = nLevel
 ProbAS.paraNorm = 0
 ProbAS.SBFA = False
 ProbAS.Surr = (False,)

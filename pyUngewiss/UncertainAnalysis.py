@@ -70,12 +70,12 @@ class UncertainAnalysis(object):
         self.nr = 1
         self.Alg = 'NLPQLP'
         if not pUnc:
-            self.nAlpha = 1
+            self.nLevel = 1
         else:
             if isinstance(pUnc, list):
-                self.nAlpha = np.shape(pUnc[0].Value)[0]
+                self.nLevel = np.shape(pUnc[0].Value)[0]
             else:
-                self.nAlpha = np.shape(pUnc.Value)[0]
+                self.nLevel = np.shape(pUnc.Value)[0]
         self.deltax = 1e-2
         self.paraNorm = True
         self.para = []
@@ -292,7 +292,7 @@ class UncertainAnalysis(object):
         def calcShadowUncertainty(Name, xOpt, xL, xU, ir, ialpha):
             if hasattr(self, 'ShadowUncertainty') is False:
                 self.ShadowUncertainty = np.zeros(
-                    (self.nr, self.np, self.nAlpha, 2)
+                    (self.nr, self.np, self.nLevel, 2)
                 )
             for i in ['Min', 'Max']:
                 Hist = pyOpt.History(Name + i, 'r')
@@ -329,9 +329,9 @@ class UncertainAnalysis(object):
                     self.ShadowUncertainty[ir, :, ialpha, 0] = lam
 
         # Start of Optimization loop
-        rUnc = np.zeros([self.nr, self.nAlpha, 2])
+        rUnc = np.zeros([self.nr, self.nLevel, 2])
         if type(self.pUnc) is list:
-            pUnc = np.zeros((len(self.pUnc), self.nAlpha, 2))
+            pUnc = np.zeros((len(self.pUnc), self.nLevel, 2))
             for i, val in enumerate(self.pUnc):
                 if type(val) == np.ndarray:
                     pUnc[i] = val
@@ -341,14 +341,14 @@ class UncertainAnalysis(object):
                     pUnc = self.pUnc.Value
             self.np = i + 1
         else:
-            pUnc = np.zeros((1, self.nAlpha, 2))
+            pUnc = np.zeros((1, self.nLevel, 2))
             pUnc[0, :, :] = self.pUnc.Value
             self.np = 1
-        ptilde = np.zeros([self.nr, np.size(pUnc, 0), self.nAlpha, 2])
-        # SU = np.zeros([self.nr, np.size(pUnc, 0)*2, self.nAlpha, 2])
-        lambdaR = np.zeros([self.nr, np.size(pUnc, 0) * 2, self.nAlpha, 2])
+        ptilde = np.zeros([self.nr, np.size(pUnc, 0), self.nLevel, 2])
+        # SU = np.zeros([self.nr, np.size(pUnc, 0)*2, self.nLevel, 2])
+        lambdaR = np.zeros([self.nr, np.size(pUnc, 0) * 2, self.nLevel, 2])
         for ir in range(self.nr):
-            for ialpha in reversed(range(self.nAlpha)):
+            for ialpha in reversed(range(self.nLevel)):
                 xL = pUnc[:, ialpha, 0]
                 xU = pUnc[:, ialpha, 1]
                 if abs(np.sum(abs(xU - xL) / (xL + np.spacing(1)))) < 0.001:
@@ -358,7 +358,7 @@ class UncertainAnalysis(object):
                     pMin = xU
                     pMax = xU
                 else:
-                    if ialpha == self.nAlpha - 1:
+                    if ialpha == self.nLevel - 1:
                         x0min = (xU + xL) / 2
                         x0max = x0min
                     else:
@@ -575,22 +575,22 @@ class UncertainAnalysis(object):
         if self.nr > 1:
             self.rUnc = [[]] * len(rUnc)
             for i, val in enumerate(rUnc):
-                if self.nAlpha == 1:
+                if self.nLevel == 1:
                     self.rUnc[i] = UncertainNumber(
-                        val, Form='interval', nalpha=self.nAlpha
+                        val, Form='interval', nLevel=self.nLevel
                     )
                 else:
                     self.rUnc[i] = UncertainNumber(
-                        val, Form='empirical', nalpha=self.nAlpha
+                        val, Form='empirical', nLevel=self.nLevel
                     )
         else:
-            if self.nAlpha == 1:
+            if self.nLevel == 1:
                 self.rUnc = UncertainNumber(
-                    rUnc[0][0], Form='interval', nalpha=self.nAlpha
+                    rUnc[0][0], Form='interval', nLevel=self.nLevel
                 )
             else:
                 self.rUnc = UncertainNumber(
-                    rUnc[0], Form='empirical', nalpha=self.nAlpha
+                    rUnc[0], Form='empirical', nLevel=self.nLevel
                 )
         self.OutputData = OutputData
 
@@ -690,13 +690,13 @@ if __name__ == '__main__':
     def SensEq3(p, r, g, x):
         return rosen_der(p)
 
-    nAlpha = 3
+    nLevel = 3
     pFuzz = [[]] * 2
-    pFuzz[0] = UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
-    pFuzz[1] = UncertainNumber([1, 2, 3, 4], Form='trapazoid', nalpha=nAlpha)
+    pFuzz[0] = UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
+    pFuzz[1] = UncertainNumber([1, 2, 3, 4], Form='trapazoid', nLevel=nLevel)
     Prob = UncertainAnalysis(SysEq2, pUnc=pFuzz, SensEq=SensEq3)
     Prob.Alg = 'PyGMO_de'
-    Prob.nAlpha = nAlpha
+    Prob.nLevel = nLevel
     Prob.paraNorm = 0
     Prob.epsStop = 1e-6
     Prob.para = 1
