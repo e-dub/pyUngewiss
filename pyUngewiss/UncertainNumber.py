@@ -23,13 +23,16 @@ import seaborn as sns
 np.seterr(divide='ignore', invalid='ignore')
 DefaultColor = (0, 123 / 255, 228 / 255)
 DefaultEdgeColor = (0, 123 / 255, 228 / 255)
+rcParams.update({'figure.autolayout': True})
 pgf_with_pdflatex = {
     'pgf.texsystem': 'pdflatex',
-    'pgf.preamble': [
-        r'\usepackage[utf8x]{inputenc}',
-        r'\usepackage[T1]{fontenc}',
-        r'\usepackage{cmbright}',
-    ],
+    'pgf.preamble': 
+        r"""
+    \usepackage[utf8x]{inputenc}
+    \usepackage[T1]{fontenc}
+    \usepackage{cmbright}
+    """,
+    #],
 }
 
 
@@ -159,7 +162,8 @@ class UncertainNumber(object):
         rcParams.update(pgf_with_pdflatex)
         if not TextRender:
             rcParams.update({'svg.fonttype': 'none'})
-        if self.Form == 'interval' or self.nLevel == 1:   # for interval plot
+        if self.Form == 'interval' or self.nLevel == 1:  
+            # for interval plot
             xsize = 5
             ysize = 0.25
             fig = plt.figure(figsize=(xsize, ysize), dpi=pdpi)
@@ -212,6 +216,7 @@ class UncertainNumber(object):
                 ),
             )
         else:
+            # for general uncertaint plots
             fig = plt.figure(figsize=(xsize, ysize), dpi=pdpi)
             ax = fig.add_subplot(1, 1, 1)
             mu = np.linspace(1, 0, np.size(self.Value, 0))
@@ -286,8 +291,9 @@ class UncertainNumber(object):
                 elif lang == 'DE':
                     plt.xlabel(r'Wert')
             rcParams.update({'font.size': fontsize})
-            # plt.tight_layout()
+            #plt.tight_layout()
             self.Plot = plt
+        plt.show()
 
 
 def plotIntervals(
@@ -326,7 +332,7 @@ def plotIntervals(
         interval = True
     else:
         interval = True
-    yPlot = nP * 0.25
+    yPlot = nP * 0.5
     thick = nP ** 0.1 * 0.3
     plt.rcParams['font.family'] = font
     plt.rcParams['figure.figsize'] = (xPlot, yPlot)
@@ -337,7 +343,7 @@ def plotIntervals(
             for ii in range(np.shape(data)[0]):
                 labels.append('Parameter ' + str(ii + 1))
     yplaces = [0.5 + i for i in reversed(range(nP))]
-    fig = plt.figure()
+    fig = plt.figure(constrained_layout=True)
     ax = fig.add_subplot(111)
     ax.set_yticks(yplaces)
     ax.set_yticklabels(labels, horizontalalignment='left')
@@ -356,7 +362,7 @@ def plotIntervals(
                 )
             )
         elif not interval:
-            ax.plot(data[ii, 0], ii + 0.5, 'x', color=color[ii])
+            ax.plot(data[ii, 0], ii + 0.5, 'x', color=color[ii], sharex=False)
     pmin = np.min(data)
     pmax = np.max(data)
     ax.plot(
@@ -391,6 +397,10 @@ def plotIntervals(
         np.min(data) - (np.max(data) - np.min(data)) / 5,
         np.max(data) + (np.max(data) - np.min(data)) / 5,
     )
+    #plt.tight_layout()
+    #plt.subplots_adjust(bottom=1)
+    plt.autoscale()
+    plt.show()
     return plt, ax
 
 
@@ -517,7 +527,7 @@ if __name__ == '__main__':
 
     print('Test plotting all uncertain numbers:')
     ATrapSing = UncertainNumber([25, 25, 25, 25], Form='trapazoid', nLevel=6)
-    ATrapSing.plotValue()
+    ATrapSing.plotValue(outline=True)
     ATrapInt = UncertainNumber([10, 10, 40, 40], Form='trapazoid', nLevel=6)
     ATrapInt.plotValue()
     ATrap = UncertainNumber([10, 20, 30, 40], Form='trapazoid', nLevel=6)
